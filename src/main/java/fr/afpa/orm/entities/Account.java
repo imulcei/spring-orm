@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+// import com.fasterxml.jackson.annotation.JsonBackReference;
+// import com.fasterxml.jackson.annotation.JsonIgnore;
+// import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,18 +14,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
+// import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+// import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
-/**
- * Classe représentant le compte bancaire d'un utilisateur
- * 
- * TODO faire de cette classe une entité
- * Plus d'informations sur les entités -> https://gayerie.dev/epsi-b3-orm/javaee_orm/jpa_entites.html
- * Attention de bien choisir les types en fonction de ceux du script SQL.
- */
+@Entity
+@Table(name = "account")
 public class Account {
     /**
      * Identifiant unique du compte
@@ -35,16 +30,114 @@ public class Account {
     private Long id;
 
     /**
-     * TODO ajout d'une association de type @ManyToOne : plusieurs comptes différents peuvent être associés à la même personne
-     * 
-     * Tutoriel présentant l'utilisation d'une telle association : https://koor.fr/Java/TutorialJEE/jee_jpa_many_to_one.wp
+     * Prénom du compte
      */
+    @Column(name = "first_name")
+    private String firstName;
+    /**
+     * Nom du compte
+     */
+    @Column(name = "last_name")
+    private String lastName;
+    /**
+     * Adresse email (unique) du compte
+     */
+    @Column(name = "email")
+    private String email;
+    /**
+     * Date d'anniversaire du compte
+     */
+    @Column(name = "birthday")
+    private LocalDate birthday;
+    /**
+     * Date de création du compte
+     */
+    @Column(name = "creationTime")
+    private LocalDateTime creationTime;
+    /**
+     * Balance du compte
+     */
+    @Column(name = "balance")
+    private BigDecimal balance;
 
-    /*
-     * TODO implémenter un constructeur vide --> obligatoire pour l'utilisation d'un ORM
+    /**
+     * Association de type "OneToMany" : une personne peut avoir plusieurs comptes
      */
+    @ManyToOne
+    @JoinColumn(name = "id_client")
+    private Client owner;
 
-    /*
-     * TODO implémenter les getters et les setters
+    /**
+     * Constructeur vide
      */
+    public Account() {
+
+    }
+
+    /**
+     * Getters et setters
+     */
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
+    }
+
+    public LocalDateTime getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(LocalDateTime creationTime) {
+        this.creationTime = creationTime;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
+
+    public Client getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Client owner) {
+        this.owner = owner;
+    };
 }

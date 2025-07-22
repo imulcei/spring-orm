@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+// import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -16,18 +16,19 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="client")
+@Table(name = "client")
 public class Client {
 
     /**
      * Identifiant unique de l'utilisateur
-     * Article présentant l'utilisation d'UUID -> https://www.baeldung.com/java-hibernate-uuid-primary-key
+     * Article présentant l'utilisation d'UUID ->
+     * https://www.baeldung.com/java-hibernate-uuid-primary-key
      */
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-      /**
+    /**
      * Prénom du propriétaire
      */
     @Column(name = "first_name")
