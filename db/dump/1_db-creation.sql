@@ -17,3 +17,16 @@ CREATE TABLE account (
 	id_client UUID,
 	FOREIGN KEY(id_client) REFERENCES client(id)
 );
+
+CREATE TABLE insurance(
+   id SERIAL PRIMARY KEY,
+   name VARCHAR(50)
+);
+
+CREATE TABLE client_insurance(
+   id_client UUID,
+   id_insurance INT,
+   PRIMARY KEY(id_client, id_insurance),
+   FOREIGN KEY(id_client) REFERENCES client(id),
+   FOREIGN KEY(id_insurance) REFERENCES insurance(id)
+);
