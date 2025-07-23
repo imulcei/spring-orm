@@ -2,9 +2,10 @@ package fr.afpa.orm.dto;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 public class ClientDto {
-    private Long id;
+    private UUID id;
     private String firstName;
     private String lastName;
     private LocalDate birthdate;
@@ -14,11 +15,11 @@ public class ClientDto {
     public ClientDto() {
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

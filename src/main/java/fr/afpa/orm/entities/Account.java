@@ -3,19 +3,13 @@ package fr.afpa.orm.entities;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-// import com.fasterxml.jackson.annotation.JsonBackReference;
-// import com.fasterxml.jackson.annotation.JsonIgnore;
-// import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-// import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-// import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -30,7 +24,7 @@ public class Account {
     /**
      * Date de création du compte
      */
-    @Column(name = "creationTime")
+    @Column(name = "creation_time")
     private LocalDateTime creationTime;
     /**
      * Balance du compte

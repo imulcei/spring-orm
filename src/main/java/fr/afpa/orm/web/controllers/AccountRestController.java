@@ -1,17 +1,8 @@
 package fr.afpa.orm.web.controllers;
 
 import java.util.List;
-// import java.util.Objects;
-import java.util.Optional;
-// import java.util.stream.Collectors;
-// import java.util.stream.Stream;
-// import java.util.stream.StreamSupport;
-// import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,11 +16,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.afpa.orm.dto.AccountDto;
-// import fr.afpa.orm.dto.AccountDto;
 import fr.afpa.orm.entities.Account;
-// import fr.afpa.orm.repositories.AccountRepository;
+import fr.afpa.orm.mappers.AccountDtoMapper;
 import fr.afpa.orm.services.AccountService;
-// import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/accounts")
@@ -39,7 +28,7 @@ public class AccountRestController {
     private AccountService accountService;
 
     @Autowired
-    private ModelMapper modelMapper;
+    private AccountDtoMapper accountMapper;
 
     // private final AccountRepository accountRepository;
 
@@ -47,9 +36,9 @@ public class AccountRestController {
     // this.accountRepository = accountRepository;
     // }
 
-    public AccountRestController(AccountService accountService, ModelMapper modelMapper) {
+    public AccountRestController(AccountService accountService, AccountDtoMapper accountMapper) {
         this.accountService = accountService;
-        this.modelMapper = modelMapper;
+        this.accountMapper = accountMapper;
     }
 
     /**
@@ -57,9 +46,7 @@ public class AccountRestController {
      */
     @GetMapping
     public List<AccountDto> getAll() {
-        return accountService.findAll().stream()
-                .map(account -> modelMapper.map(account, AccountDto.class))
-                .collect(Collectors.toList());
+        return accountService.findAll();
     }
 
     /**
@@ -68,8 +55,8 @@ public class AccountRestController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<AccountDto> getOne(@PathVariable long id) {
-        Optional<Account> account = accountService.findById(id);
-        return account.map(a -> ResponseEntity.ok(modelMapper.map(a, AccountDto.class)))
+        return accountService.findById(id)
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
@@ -79,9 +66,12 @@ public class AccountRestController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public AccountDto create(@RequestBody AccountDto accountDto) {
-        Account account = modelMapper.map(accountDto, Account.class);
+        Account account = new Account();
+        account.setId(accountDto.getId());
+        account.setCreationTime(accountDto.getCreationTime());
+        account.setBalance(accountDto.getBalance());
         Account savedAccount = accountService.save(account);
-        return modelMapper.map(savedAccount, AccountDto.class);
+        return accountMapper.apply(savedAccount);
     }
 
     /**
@@ -89,15 +79,9 @@ public class AccountRestController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<AccountDto> update(@PathVariable long id, @RequestBody AccountDto accountDto) {
-        Optional<Account> savedAccount = accountService.findById(id);
-        if (savedAccount.isPresent()) {
-            Account accountToUpdate = modelMapper.map(accountDto, Account.class);
-            accountToUpdate.setId(id);
-            accountService.save(accountToUpdate);
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return accountService.update(id, accountDto)
+                .map(updatedAccount -> ResponseEntity.ok(accountMapper.apply(updatedAccount)))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     /**
@@ -105,9 +89,7 @@ public class AccountRestController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> remove(@PathVariable long id) {
-        Optional<Account> savedAccount = accountService.findById(id);
-        if (savedAccount.isPresent()) {
-            accountService.delete(savedAccount.get());
+        if (accountService.deleteById(id)) {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();

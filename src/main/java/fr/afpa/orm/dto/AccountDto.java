@@ -1,7 +1,6 @@
 package fr.afpa.orm.dto;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**

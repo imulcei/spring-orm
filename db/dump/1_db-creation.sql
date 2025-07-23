@@ -3,7 +3,7 @@ DROP TABLE if exists public.client CASCADE;
 DROP TABLE if exists public.account CASCADE;
 
 CREATE TABLE client (
-	id SERIAL PRIMARY KEY,
+	id UUID PRIMARY KEY,
 	first_name VARCHAR(100),
 	last_name VARCHAR(50),
 	birthdate date,
@@ -12,8 +12,8 @@ CREATE TABLE client (
 
 CREATE TABLE account (
 	id SERIAL PRIMARY KEY,
-	creationTime timestamp,
+	creation_time timestamp,
 	balance bigint,
-	id_client INT,
+	id_client UUID,
 	FOREIGN KEY(id_client) REFERENCES client(id)
 );
