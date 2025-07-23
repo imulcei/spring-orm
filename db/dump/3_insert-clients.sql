@@ -1,0 +1,1 @@
+INSERT INTO public."client" (id) SELECT id FROM public.person LIMIT 60;
