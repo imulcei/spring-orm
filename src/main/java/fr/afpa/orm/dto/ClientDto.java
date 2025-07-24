@@ -4,12 +4,15 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class ClientDto {
     private UUID id;
     private String firstName;
     private String lastName;
     private LocalDate birthdate;
     private String email;
+    @JsonIgnore
     private List<AccountDto> accounts;
 
     public ClientDto() {

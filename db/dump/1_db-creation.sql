@@ -12,7 +12,8 @@ CREATE TABLE person (
     first_name VARCHAR(100),
     last_name VARCHAR(50),
     birthdate DATE,
-    email VARCHAR(50) UNIQUE
+    email VARCHAR(50) UNIQUE,
+    person_type varchar(1) NOT NULL
 );
 
 CREATE TABLE client (
@@ -20,10 +21,12 @@ CREATE TABLE client (
     FOREIGN KEY (id) REFERENCES person(id)
 );
 
+CREATE TYPE specialty AS ENUM ('ASSURANCE', 'PLACEMENT', 'PRET_IMMO', 'CREDIT_CONSO');
+
 CREATE TABLE bank_advisor (
     id UUID PRIMARY KEY,
     hiring_date DATE,
-    specialty VARCHAR(50),
+    "specialty" specialty,
     FOREIGN KEY (id) REFERENCES person(id)
 );
 
